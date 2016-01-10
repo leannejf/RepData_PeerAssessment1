@@ -32,7 +32,7 @@ by_date <- group_by(activity, date)
 per_day <- summarize(by_date, sum(steps))
 ```
 
-By plotting steps per day in a histogram, we can see that the mean would be just over 10,000 steps per day. 
+By plotting steps per day in a histogram, we see that the mean would be just over 10,000 steps per day. 
 
 ```r
 hist(per_day$`sum(steps)`, breaks = 10, main = "Histogram of Total Steps Per Day", 
@@ -62,7 +62,7 @@ median(per_day$`sum(steps)`, na.rm = T)
 ## What is the average daily activity pattern?
 
 ```r
-# Group data by inteval and calculate mean steps per interval
+# Group data by interval and calculate mean steps per interval
 by_interval <- group_by(activity, interval)
 mean_per_interval <- summarize(by_interval, mean(steps, na.rm = T))
 
@@ -88,7 +88,7 @@ mean_per_interval[max_int, 1]
 ```
 
 ## Imputing missing values
-A quick examination of the original datasets reveals there are 2304 missing values,and all of those occur in the "steps" variable.
+A quick examination of the original datasets reveals there are 2304 missing values, and all of those occur in the "steps" variable.
 
 ```r
 sapply(activity, function(x) sum(is.na(x)))
@@ -99,7 +99,7 @@ sapply(activity, function(x) sum(is.na(x)))
 ##     2304        0        0
 ```
 
-We can impute the missing data by replacing the NAs with the mean number of steps for the specific 5-minute interval. I approached this by adding a column with mean of each interval, and then replacing the NAs with the value in that column:
+We can impute the missing data by replacing the NAs with the mean number of steps for the specific 5-minute interval. I approached this by adding a column with the mean of each interval and then replacing the NAs with the value in that column:
 
 ```r
 newdata <- ddply(by_interval, .(interval), transform, mean = mean(steps, na.rm = T))
@@ -123,7 +123,7 @@ hist(new_per_day$`sum(steps)`, breaks = 10, main = "Histogram of Total Steps Per
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
 
-The shape histogram looks similar to the one we created without missing data. The mean does not change, and the median changes only very slightly:
+The shape of the new histogram looks similar to the one we created without missing data. The mean does not change, and the median changes only very slightly:
 
 ```r
 mean(new_per_day$`sum(steps)`)
@@ -145,7 +145,7 @@ This makes sense given the selected approach for imputing the data. Since most m
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-To answer this, rows were labeled as "weekend"" or "weekday" by adding a column to identify the day of the week and
+To answer this, rows were labeled as "weekend" or "weekday" by adding a column to identify the day of the week and
 then replacing those labels with "weekend"" or "weekday".
 
 
@@ -174,4 +174,4 @@ p + theme_bw(base_size = 24)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
 
-Yes, there are differenes in activity patterns between weekdays and weekends. It appears that activity increases earlier in the day and decreases earlier in the evening on weekdays compared to weekends. However, on weekends, there are more peaks of higher activity throughout the day.
+Yes, there are differences in activity patterns between weekdays and weekends. It appears that activity increases earlier in the day and decreases earlier in the evening on weekdays compared to weekends. However, on weekends, there are more peaks of higher activity throughout the day.
